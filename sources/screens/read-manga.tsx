@@ -178,7 +178,7 @@ const ReadManga = (props: PropsList) => {
                                 height: height * 0.75,
                                 alignSelf: 'center'
                             }}
-                            resizeMode = 'contain'
+                            resizeMode = 'stretch'
                         />
                         // <ImageViewer
                         //     imageUrls = {[{url: item.chapter_image_link}]}
