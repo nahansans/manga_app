@@ -8,6 +8,7 @@ import { StackParamsList } from '../references/types/navigator'
 import { Fonts } from '../references/fonts';
 import { Colors } from './../references/colors';
 import LinearGradient from 'react-native-linear-gradient';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type PropsList = {
     navigation: StackNavigationProp<StackParamsList, 'GenreMangaList'>
@@ -36,7 +37,11 @@ const GenreMangaList = (props: PropsList) => {
     }, [])
 
     const getData = async() => {
-        fetch(`${BASE_URL}/genres/${route.params['endpoint']}${page}`)
+        
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET', `${BASE_URL}/genres/${route.params['endpoint']}${page}`)
         .then(res => res.json())
         .then(resJSON => {
             const manga_list = resJSON.manga_list

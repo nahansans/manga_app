@@ -9,6 +9,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { StackParamsList } from '../references/types/navigator'
 import LinearGradient from 'react-native-linear-gradient';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type PropsList = {
     navigation: StackNavigationProp<StackParamsList, 'Home'>,
@@ -45,7 +46,10 @@ const Home = (props: PropsList) => {
     const [page, setpage] = useState(1)
 
     const getAllManga = () => {
-        fetch(`${BASE_URL}/manga/page/${page}`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET',`${BASE_URL}/manga/page/${page}`)
         .then(res => res.json())
         .then(resJSON => {
             const manga_list = resJSON.manga_list
@@ -63,7 +67,10 @@ const Home = (props: PropsList) => {
         })
     }
     const getPopularManga = () => {
-        fetch(`${BASE_URL}/manga/popular/1`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET' ,`${BASE_URL}/manga/popular/1`)
         .then(res => res.json())
         .then(resJSON => {
             setPopularManga(resJSON.manga_list)

@@ -10,6 +10,7 @@ import { Fonts } from './../references/fonts';
 import { BASE_URL } from './../references/base_url';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFetchBlob from 'rn-fetch-blob'
 
 type PropsList = {
     navigation: StackNavigationProp<StackParamsList, 'DetailManga'>
@@ -67,7 +68,10 @@ const DetailManga = (props: PropsList) => {
     }, [])
 
     const getData = async() => {
-        await fetch(`${BASE_URL}/manga/detail/${route.params['endPoint']}`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET', `${BASE_URL}/manga/detail/${route.params['endPoint']}`)
         .then(res => res.json())
         .then(resJSON => {
             setitem(resJSON)
@@ -76,16 +80,9 @@ const DetailManga = (props: PropsList) => {
 
     const bookmark = async(title: any, thumb: any, endpoint: any) => {        
         
-        if (isBookmark == false) {
-            const data = [{
-                title,
-                thumb,
-                endpoint
-            }]
-            await AsyncStorage.setItem(route.params['endPoint'], JSON.stringify(data))
-            setisBookmark(true)
-        } else {
-            await AsyncStorage.removeItem(route.params['endPoint'])
+        if (isBookmark) {
+            setisBookmark(false)
+        } else {            
             setisBookmark(true)
         }
         
@@ -93,12 +90,12 @@ const DetailManga = (props: PropsList) => {
     }
 
     const checkIsBookmarked = async() => {
-        AsyncStorage.removeItem('bookmark')
-        const bookmarkName = route.params['endPoint']
-        const bookmarkData = await AsyncStorage.getItem(bookmarkName)
-        if (bookmarkData != null) {
-            setisBookmark(true)
-        }
+        // AsyncStorage.removeItem('bookmark')
+        // const bookmarkName = route.params['endPoint']
+        // const bookmarkData = await AsyncStorage.getItem(bookmarkName)
+        // if (bookmarkData != null) {
+        //     setisBookmark(true)
+        // }
         
     }
 
@@ -482,7 +479,7 @@ const DetailManga = (props: PropsList) => {
                     numberOfLines = {1}
                     style = {{
                         textAlign: 'center',
-                        color: 'white',
+                        color: Colors.white,
                         marginRight: 27,
                         fontSize: 14,
                         fontFamily: OpenSans.SemiBold,

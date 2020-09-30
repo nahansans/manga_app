@@ -11,6 +11,7 @@ import { BASE_URL } from './../references/base_url';
 import { Colors } from './../references/colors';
 import { Fonts } from './../references/fonts';
 import LinearGradient from 'react-native-linear-gradient';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type PropsList = {
     navigation: StackNavigationProp<StackParamsList, 'ReadManga'>
@@ -47,7 +48,10 @@ const ReadManga = (props: PropsList) => {
         setprevDisabled(false)
         setnextDisabled(false)
         setloading(true)
-        await fetch(`${BASE_URL}/manga/detail/${route.params['endPoint']}`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET' ,`${BASE_URL}/manga/detail/${route.params['endPoint']}`)
         .then(res => res.json())
         .then(resJSON => {
             for (let index = 0; index < resJSON.chapter.length; index++) {

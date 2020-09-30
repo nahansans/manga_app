@@ -8,6 +8,7 @@ import { StackParamsList } from '../references/types/navigator'
 import { Colors } from './../references/colors';
 import { BASE_URL } from './../references/base_url';
 import { Fonts } from './../references/fonts';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type PropsList = {
     navigation: StackNavigationProp<StackParamsList, 'Search'>
@@ -50,7 +51,10 @@ const Search = (props: PropsList) => {
 
     const getRecomended = async() => {        
         setIsLoadingSearch(true)
-        fetch(`${BASE_URL}/recommended`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET' ,`${BASE_URL}/recommended`)
         .then(res => res.json())
         .then(resJSON => {
             setRecomended(resJSON.manga_list)
@@ -59,7 +63,10 @@ const Search = (props: PropsList) => {
     }
 
     const getGenres = async() => {
-        fetch(`${BASE_URL}/genres`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET' ,`${BASE_URL}/genres`)
         .then(res => res.json())
         .then(resJSON => {
             setGenres(resJSON.list_genre)
@@ -70,7 +77,10 @@ const Search = (props: PropsList) => {
         setIsSearch(true)
         setIsEmpty(false)
         setIsLoadingSearch(true)
-        fetch(`${BASE_URL}/cari/${search}`)
+        RNFetchBlob.config({
+            trusty: true
+        })
+        .fetch('GET' ,`${BASE_URL}/cari/${search}`)
         .then(res => res.json())
         .then(resJSON => {                
             setsearchData(resJSON)
